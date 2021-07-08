@@ -1,0 +1,574 @@
+{% extends 'base.html' %} {% block title %} Train Model {% endblock %} {% block
+nav_items %}
+
+<ul class="nav">
+  <li class="nav-item">
+    <a href="{{ url_for('dashboard_page') }}" class="nav-link"><i class="typcn typcn-home"></i> Welcome</a>
+  </li>
+  <li class="nav-item active">
+    <a href="{{ url_for('train_model_page') }}" class="nav-link"><i class="typcn typcn-chart-area-outline"></i> Train
+      Model</a>
+  </li>
+  <li class="nav-item">
+    <a href="{{ url_for('search_page') }}" class="nav-link"><i class="typcn typcn-zoom-outline"></i> Search</a>
+  </li>
+</ul>
+
+{% endblock %} {% block content %}
+
+<div class="az-content pd-y-20 pd-lg-y-30 pd-xl-y-40">
+  <div class="container">
+    <div class="az-content-body">
+      <div class="az-dashboard-one-title">
+        <div>
+          <h3 class="az-content-title">Train Model Settings</h3>
+        </div>
+      </div>
+      <!-- az-dashboard-one-title -->
+
+      <div class="az-content-body d-flex flex-column pd-lg-l-10">
+        <!--pd-lg-l-40-->
+
+        <div class="az-content-label mg-b-5 text-align: Center;">
+          <span class="pd-r-5"><img src="{{ url_for('static', filename='images/one.png') }}"
+              style="height: 30px; width: 30px; position: " alt="image" /> </span>Upload Trainig Set
+        </div>
+        <p class="mg-b-20">* Training set should be in a ZIP file</p>
+
+        <!-- <form method="post" class="needs-validation" action="/uploadTrainSet" enctype="multipart/form-data"> -->
+        <!-- was-validated -->
+        <div class="row row-sm mg-b-20">
+          <div class="col-sm-6 col-md-6 col-lg-6 mg-t-10">
+            <div class="custom-file">
+              <input type="file" name="file_input" class="custom-file-input" id="file_input" oninput="input_filename()"
+                required /><!--form-control-->
+              <label class="custom-file-label" id="file_input_label" for="file_input">Select file</label>
+            </div>
+          </div>
+          <!-- col -->
+
+          <!-- <div class="col-sm-2 col-md-6 col-lg-4">
+              <input type="submit" class="btn btn-outline-indigo" value="Upload">
+            </div> -->
+
+          <div class="col-sm-2 col-md-2 col-lg-2 mg-t-10" id="upload_btn">
+            <div class="custom-file">
+              <button onclick="upload('{{ request.url }}');" class="btn btn-az-primary">
+                Upload
+              </button>
+            </div>
+          </div>
+
+          <div class="col-sm-2 col-md-2 col-lg-2 mg-t-10 d-none" id="loading_btn">
+            <div class="custom-file">
+              <button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Uploading...
+              </button>
+            </div>
+          </div>
+
+          <div class="col-sm-2 col-md-2 col-lg-2 mg-t-10 d-none" id="cancel_btn" >
+            <div class="custom-file">
+              <button type="button" class="btn btn-secondary">
+                Cancel upload
+              </button>
+            </div>
+          </div>
+
+
+
+
+
+        </div>
+        <!-- row -->
+
+        <!-- <div id="progress_wrapper" class="d-none">
+          <label id="progress_status">50% upload</label>
+          <div class="progress mb-3">
+            <div
+              id="progress"
+              class="progress-bar"
+              role="progressbar"
+              aria-valuenow="25"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            ></div>
+          </div>
+        </div> -->
+
+        <div id="alert_wrapper"></div>
+
+        <!-- </form> -->
+
+        <div id="uploaded_images_wrapper"></div>
+
+        <hr class="mg-y-15" />
+
+        <div class="az-content-label mg-b-5 text-align: Center;">
+          <span class="pd-r-5"><img src="{{ url_for('static', filename='images/two.png') }}"
+              style="height: 30px; width: 30px; position: " alt="image" /> </span>Hyperparameters Tuninig
+        </div>
+        <p class="mg-b-20">* Select training hyperparameters</p>
+
+        <!-- <form method="post" class="needs-validation" action="/train"> -->
+          <!-- was-validated -->
+          <div class="row row-sm mg-b-40">
+            <div class="col-lg-3">
+              <p class="mg-b-10">Optimizer</p>
+              <select class="form-control select2-no-search mg-b-10" name="optimizer" id="optimizer" required>
+                <option label="Choose one"></option>
+                <option value="Adam">Adam</option>
+                <option value="SGD">SGD</option>
+              </select>
+            </div>
+            <!-- col-3 -->
+            <div class="col-lg-3">
+              <p class="mg-b-10">Learning Rate</p>
+              <input list="learningrate" class="form-control select2-no-search mg-b-10" type="number" step="any" min="0" required name="lr" id="lr" placeholder="Click to select or input">
+              <datalist id="learningrate"  style="display:none;">
+                <option  value="0.001">
+                <option  value="0.0003">
+              </datalist>
+            </div>
+
+
+            <!-- col-3 -->
+            <div class="col-lg-3">
+              <p class="mg-b-10">Epochs</p> 
+              <input list="epochsnumber" class="form-control select2-no-search mg-b-10" type="number" min="0" required name="epochs" id="epochs" placeholder="Click to select or input">
+              <datalist id="epochsnumber"  style="display:none;">
+                <option label="Choose one">
+                <option value="3">
+                <option value="6">
+              </datalist>
+            </div>
+
+
+            <!-- col-3 -->
+            <div class="col-lg-3">
+              <p class="mg-b-10">Batch Size</p>
+              <input list="batchsizenumber" class="form-control select2-no-search mg-b-10" type="number" min="0" required name="batchsize" id="batchsize" placeholder="Click to select or input">
+              <datalist id="batchsizenumber"  style="display:none;">
+                <option value="16">
+                <option value="32">
+              </datalist>
+            </div>
+            <!-- col-3 -->
+          </div>
+          <!-- row -->
+
+          <div class="az-content-label mg-b-5 text-align: Center;">
+            <span class="pd-r-5"><img src="{{ url_for('static', filename='images/three.png') }}"
+                style="height: 30px; width: 30px; position: " alt="image" /> </span>Model name
+          </div>
+          <p class="mg-b-20">* Inter model name</p>
+          <div class="row row-sm">
+            <div class="col-lg-3">
+              <input class="form-control" placeholder="Model name" type="text" name="modelName" id="modelName" />
+            </div>
+            <!-- col -->
+          </div>
+          <!-- row -->
+
+          <div class="ht-40"></div>
+
+          <div class="row row-sm mg-b-20">
+            <div class="col-sm-4 col-md-4 col-lg-4 mg-t-10" id="train_btn">
+     
+                <button onclick="train('{{ request.url }}');" class="btn btn-az-primary btn-block" >
+                  Start Training
+                </button>
+     
+            </div>
+  
+            <div class="col-sm-4 col-md-4 col-lg-4 mg-t-10 d-none" id="training_btn">
+     
+                <button class="btn btn-primary"  type="button" disabled>
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  Training...
+                </button>
+       
+            </div>
+  
+            <div class="col-sm-4 col-md-4 col-lg-4 mg-t-10 d-none" id="cancel_train_btn" >
+ 
+                <button type="button" class="btn btn-secondary">Cancel training</button>
+            </div>
+         
+          </div>
+
+          <div id="train_alert_wrapper" class="mg-t-15"></div>
+        <!-- </form> -->
+
+        <!-- <hr class="mg-y-30" />
+        <hr class="mg-y-30" /> -->
+        <div class="ht-40"></div>
+      </div>
+      <!-- az-content-body -->
+    </div>
+  </div>
+  <!-- container -->
+</div>
+<!-- az-content -->
+
+
+
+<script>
+  // Model trainig
+
+
+
+
+
+  var file_input = document.getElementById("file_input");
+  var upload_btn = document.getElementById("upload_btn");
+  // Get a reference to the 3 buttons
+  var train_btn = document.getElementById("train_btn");
+  var training_btn = document.getElementById("training_btn");
+  var cancel_train_btn = document.getElementById("cancel_train_btn");
+
+  // Get a reference to the alert wrapper
+  var train_alert_wrapper = document.getElementById("train_alert_wrapper");
+
+  // Get a reference to the file input element & input label
+  var optimizer_input = document.getElementById("optimizer");
+  var lr_input = document.getElementById("lr");
+  var epochs_input = document.getElementById("epochs"); 
+  var batchsize_input = document.getElementById("batchsize");
+  var modelName_input = document.getElementById("modelName");
+
+  // Function to show alerts
+  function show_train_alert(message, alert) {
+    train_alert_wrapper.innerHTML = `
+    <div id="alert" class="alert alert-${alert} alert-dismissible fade show" role="alert">
+      <span>${message}</span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  `;
+  }
+
+  // Function to upload file
+  function train(url) {
+    train_alert_wrapper.innerHTML = "";
+    // Reject if the file input is empty & throw alert
+    if (!modelName_input.value) {
+      show_train_alert("Model name is empty", "warning");
+
+      return;
+    }
+
+    // Create a new FormData instance
+    var train_data = new FormData();
+
+    // Create a XMLHTTPRequest instance
+    var train_request = new XMLHttpRequest();
+
+    // Set the response type
+    train_request.responseType = "json";
+
+    // Clear any existing alerts
+    train_alert_wrapper.innerHTML = "";
+
+    // Disable the input during upload
+    upload_btn.disabled = true;
+    file_input.disabled  = true;
+    optimizer_input.disabled = true;
+    lr_input.disabled = true;
+    epochs_input.disabled = true;
+    batchsize_input.disabled = true;
+    modelName_input.disabled = true;
+
+ 
+    // Hide the upload button
+    train_btn.classList.add("d-none");
+
+    // Show the loading button
+    training_btn.classList.remove("d-none");
+
+    // Show the cancel button
+    cancel_train_btn.classList.remove("d-none");
+
+
+    // Append the file to the FormData instance
+    train_data.append("action", "train");
+
+    train_data.append("optimizer", optimizer_input.value);
+    train_data.append("lr", lr_input.value);
+    train_data.append("epochs", epochs_input.value);
+    train_data.append("batchsize", batchsize_input.value);
+    train_data.append("modelName", modelName_input.value);
+
+
+    // request load handler (transfer complete)
+    train_request.addEventListener("load", function (e) {
+      if (train_request.status == 200) {
+        show_train_alert(`Model successfuly trained`, "success");
+        // uploaded_images_wrapper.innerHTML = train_request.response.data
+
+
+      } else {
+        show_train_alert(`Error training file`, "danger");
+      }
+
+      reset_train();
+    });
+
+    // train_request error handler
+    train_request.addEventListener("error", function (e) {
+      reset_train();
+
+      show_train_alert(`Error during trainig`, "warning");
+    });
+
+    // train_request abort handler
+    train_request.addEventListener("abort", function (e) {
+      reset_train();
+
+      show_train_alert(`Training cancelled`, "primary");
+    });
+
+    // Open and send the train_request
+    train_request.open("post", url);
+    train_request.send(train_data);
+
+    cancel_train_btn.addEventListener("click", function () {
+      train_request.abort();
+    });
+  }
+
+  // Function to reset the page
+  function reset_train() {
+
+    // Clear the input
+    // optimizer_input.value = "Choose one";
+    lr_input.value = null;
+    epochs_input.value = null;
+    batchsize_input.value = null;
+    modelName_input.value = null;
+
+    // Hide the cancel button
+    cancel_train_btn.classList.add("d-none");
+
+    // Reset the input element
+    upload_btn.disabled = false;
+    file_input.disabled = false;
+    optimizer_input.disabled = false;
+    lr_input.disabled = false;
+    epochs_input.disabled = false;
+    batchsize_input.disabled = false;
+    modelName_input.disabled = false;
+
+    // Show the upload button
+    train_btn.classList.remove("d-none");
+
+    // Hide the loading button
+    training_btn.classList.add("d-none");
+
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  // Get a reference to the 3 buttons
+  var upload_btn = document.getElementById("upload_btn");
+  var loading_btn = document.getElementById("loading_btn");
+  var cancel_btn = document.getElementById("cancel_btn");
+
+  // Get a reference to the alert wrapper
+  var alert_wrapper = document.getElementById("alert_wrapper");
+
+  // Get a reference to the file input element & input label
+  var input = document.getElementById("file_input");
+  var file_input_label = document.getElementById("file_input_label");
+
+  // Function to show alerts
+  function show_alert(message, alert) {
+    alert_wrapper.innerHTML = `
+    <div id="alert" class="alert alert-${alert} alert-dismissible fade show" role="alert">
+      <span>${message}</span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  `;
+  }
+
+  // Function to upload file
+  function upload(url) {
+    uploaded_images_wrapper.innerHTML = "";
+    // Reject if the file input is empty & throw alert
+    if (!input.value) {
+      show_alert("No file selected", "warning");
+
+      return;
+    }
+
+    // Create a new FormData instance
+    var data = new FormData();
+
+    // Create a XMLHTTPRequest instance
+    var request = new XMLHttpRequest();
+
+    // Set the response type
+    request.responseType = "json";
+
+    // Clear any existing alerts
+    alert_wrapper.innerHTML = "";
+
+    // Disable the input during upload
+    input.disabled = true;
+
+    // Hide the upload button
+    upload_btn.classList.add("d-none");
+
+    // Show the loading button
+    loading_btn.classList.remove("d-none");
+
+    // Show the cancel button
+    cancel_btn.classList.remove("d-none");
+
+    // Show the progress bar
+    // progress_wrapper.classList.remove("d-none");
+
+    // Get a reference to the file
+    var file = input.files[0];
+
+    // Get a reference to the filename
+    var filename = file.name;
+
+    // Get a reference to the filesize & set a cookie
+    var filesize = file.size;
+    document.cookie = `filesize=${filesize}`;
+
+    // Append the file to the FormData instance
+    data.append("file", file);
+    data.append("action", "upload");
+
+    // // request progress handler
+    // request.upload.addEventListener("progress", function (e) {
+    //   // Get the loaded amount and total filesize (bytes)
+    //   var loaded = e.loaded;
+    //   var total = e.total;
+
+    //   // Calculate percent uploaded
+    //   var percent_complete = (loaded / total) * 100;
+
+    //   // Update the progress text and progress bar
+    //   progress.setAttribute("style", `width: ${Math.floor(percent_complete)}%`);
+    //   progress_status.innerText = `${Math.floor(percent_complete)}% uploaded`;
+    // });
+
+    // request load handler (transfer complete)
+    request.addEventListener("load", function (e) {
+      if (request.status == 200) {
+        show_alert( request.response.nbrFiles+ ` images successfuly uploaded`, "success");
+        uploaded_images_wrapper.innerHTML = request.response.data
+
+        // $('div#uploaded_images_wrapper').append(request.response.data);
+
+        // const uploaded_images_wrapper = document.getElementById(
+        //   "uploaded_images_wrapper"
+        // );
+        // const list = JSON.parse(request.response.images_to_display);
+        // show_alert(list, "success");
+        // // show_alert(`File successfuly uploaded`, "success");
+        // // const list =request.response
+        // // alert(list);
+        // // for (var i = 0; i < list.length; i++) {
+        // //           alert(list[i]);}
+
+        // let imagesList =
+        //   '<div class="row row-sm mg-b-20"><div class="col-sm-12 col-md-6 col-lg-4">';
+        // console.log("imagesList", imagesList);
+        // for (let index = 0; index < list.length; index++) {
+        //   console.log("imagesList iin", imagesList);
+
+        //   const p = list[index][0];
+        //   const f = list[index][1];
+        //   imagesList =
+        //     imagesList +
+        //     '{% if true %} <div class="responsive"><div class="gallery"><a target="_blank" href="{{ url_for("download_file", filename=f, path=p) }}"><img src="{{ url_for("download_file", filename=f, path=p) }}" alt="image" /></a></div></div>{% endif %}';
+        //   console.log("imagesList", imagesList);
+
+        // }
+        // uploaded_images_wrapper.innerHTML =
+        //     imagesList + '</div><!-- col --><div class="clearfix"></div></div>';
+      } else {
+        show_alert(`Error uploading file`, "danger");
+      }
+
+      reset();
+    });
+
+    // request error handler
+    request.addEventListener("error", function (e) {
+      reset();
+
+      show_alert(`Error uploading file`, "warning");
+    });
+
+    // request abort handler
+    request.addEventListener("abort", function (e) {
+      reset();
+
+      show_alert(`Upload cancelled`, "primary");
+    });
+
+    // Open and send the request
+    request.open("post", url);
+    request.send(data);
+
+    cancel_btn.addEventListener("click", function () {
+      request.abort();
+    });
+  }
+
+  // Function to update the input placeholder
+  function input_filename() {
+    file_input_label.innerText = input.files[0].name;
+  }
+
+  // Function to reset the page
+  function reset() {
+    // Clear the input
+    input.value = null;
+
+    // Hide the cancel button
+    cancel_btn.classList.add("d-none");
+
+    // Reset the input element
+    input.disabled = false;
+
+    // Show the upload button
+    upload_btn.classList.remove("d-none");
+
+    // Hide the loading button
+    loading_btn.classList.add("d-none");
+
+    // Hide the progress bar
+    // progress_wrapper.classList.add("d-none");
+
+    // Reset the progress bar state
+    // progress.setAttribute("style", `width: 0%`);
+
+    // Reset the input placeholder
+    file_input_label.innerText = "Select file";
+  }
+
+
+</script>
+
+{% endblock %}

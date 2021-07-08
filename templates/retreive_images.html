@@ -1,0 +1,207 @@
+{% extends 'base.html' %} 
+
+{% block title %} Train Model {% endblock %} 
+
+
+{% block nav_items %}
+
+<style type="text/css">
+  #qimg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      max-width: 100%;
+      max-height: 100%;
+  }
+  </style>
+
+
+<ul class="nav">
+  <li class="nav-item ">
+    <a href="{{ url_for('dashboard_page') }}" class="nav-link"><i class="typcn typcn-home"></i> Welcome</a>
+  </li>
+  <li class="nav-item ">
+    <a href="{{ url_for('train_model_page') }}" class="nav-link"><i class="typcn typcn-chart-area-outline"></i> Train Model</a>
+  </li>
+  <li class="nav-item active">
+    <a href="{{ url_for('search_page') }}" class="nav-link"><i class="typcn typcn-zoom-outline"></i> Search</a>
+  </li>
+</ul>
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="az-content" style="padding-top: 0px;">
+    <div class="container">
+              <div class="az-content pd-y-20 pd-lg-y-30 pd-xl-y-40" style="width: 100%;">
+                <div class="container" style="width: 100%;">
+
+                  <div class="az-content-body d-flex flex-column" style="width: 100%;">
+                    <h4 class="">Image Retreival</h4>
+                    <div class="container-fluid">
+                      <div class="row justify-content-center" style="width: 100%;">
+                        <div
+                          class="
+                            col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9
+                            text-center
+                            p-0
+                            mb-2
+                          "
+                        >
+                          <div class="card px-0 pb-0 mt-3 mb-3">
+
+                            <form id="msform">
+                              <!-- progressbar -->
+                              <ul id="progressbar">
+                                <li class="active" id="account"><strong>Loading Data Set And Features Extraction</strong></li>
+                                <li id="personal"><strong>Image Search</strong></li>
+                              </ul>
+
+                              <br />
+                              <!-- fieldsets -->
+                              <fieldset>
+                                <div class="form-card">
+                                  <div class="row mg-b-20">
+                                    <div class="col-9">
+                                      <p style="font-size: 14px;">Before search testing your model you will need to load your test data set and your modal </p>
+                                    </div>
+                                    <div class="col-3">
+                                      <h6 class="steps">Step 1 - 2</h6>
+                                    </div>
+                                  </div>
+                                  <h6 class="mg-b-30">1- Please select the method that you want to use to fetch the data classes</h6>
+                                  <div class="row mg-t-10 justify-content-between">
+                                    <div class="col-lg-4">
+                                      <label class="rdiobox">
+                                        <input checked name="importMethod" value="folder" type="radio" >
+                                        <span>Import classes from folders name</span>
+                                      </label>
+                                    </div><!-- col-3 -->
+                                    <div class="col-lg-1">
+                                      <h5>OR</h5>
+                                    </div><!-- col-3 -->
+                                    <div class="col-lg-4 mg-t-20 mg-lg-t-0">
+                                      <label class="rdiobox">
+                                        <input name="importMethod" value="csv" type="radio">
+                                        <span>Import classes from csv name</span>
+                                      </label>
+                                    </div><!-- col-3 -->
+                                  </div><!-- row -->
+
+                                    <!-- was-validated -->
+                                    <p class="mg-b-10">* Training set should be in a ZIP file</p>
+                                    <div class="row row-sm mg-b-20">
+                                      <div class="col-sm-12">
+                                        <div class="custom-file">
+                                          <input type="file" name="dataSetFile" class="custom-file-input" id="dataSetFile" accept=".zip">
+                                          <label class="custom-file-label" for="customFile">Choose file</label>
+                                        </div>
+                                      </div><!-- col -->
+                                    </div><!-- row -->
+                                    <div id="csvInputs" class="hideCsvFields">
+                                    <p class="mg-b-10">Please select the csv file that contains the data classes</p>
+                                    <div class="row row-sm mg-b-20">
+                                      <div class="col-sm-12">
+                                        <div class="custom-file">
+                                          <input type="file" name="csvFile" class="custom-file-input" id="csvFile" accept=".csv">
+                                          <label class="custom-file-label" for="customFile">Choose csv file</label>
+                                        </div>
+                                      </div><!-- col -->
+                                    </div><!-- row -->
+                                    <div class="row row-sm mg-b-20">
+                                      <div class="col-sm-12">
+                                        <p class="mg-b-10">Please select the column that contains the classes names</p>
+                                        <select name="classColumn" id="classColumn" class="form-control select2-no-search">
+
+                                        </select>
+                                      </div><!-- col -->
+                                    </div><!-- row -->
+                                  </div>
+                                  <div class="row row-sm mg-b-20 mg-t-30">
+                                    <div class="col-sm-12">
+                                      <h6 class="mg-b-30 mg-t-20">2- Please select the modal that you want to use</h6>
+                                      <select name="modal" id="modal" class="form-control select2-no-search">
+                                        <option value="Firefox" selected>Firefox</option>
+                                        <option value="Chrome">Chrome</option>
+                                        <option value="Safari">Safari</option>
+                                        <option value="Opera">Opera</option>
+                                        <option value="Internet Explorer">Internet Explorer</option>
+                                      </select>
+                                    </div><!-- col -->
+                                  </div><!-- row -->
+                                </div>
+                                <button
+                                  type="button"
+                                  id="nextFirstStep"
+                                  name="next"
+                                  disabled
+                                  class="next action-button disabled"
+                                  value="Next"
+                                >Next</button>
+                              </fieldset>
+                              <fieldset>
+                                <div class="form-card">
+                                  <div class="row">
+                                    <div class="col-9">
+                                      <p style="font-size: 14px;"> You can now use the previously selected modal to search for similar images in your test dataset.  </p>
+                                    </div>
+                                    <div class="col-3">
+                                      <h6 class="steps">Step 2 - 2</h6>
+                                    </div>
+                                  </div>
+                                  <p class="mg-b-10">Please select an image</p>
+                                  <div class="row row-sm mg-b-20">
+                                    <div class="col-sm-12">
+                                      <div class="custom-file">
+                                        <input type="file" name="image" class="custom-file-input" id="image" accept="image/png, image/jpeg">
+                                        <label class="custom-file-label" for="image">Choose image</label>
+                                      </div>
+                                    </div><!-- col -->
+                                  </div><!-- row -->
+                                  <div class="row row-sm">
+                                    <div class="col-lg">
+                                      <p class="mg-b-10">Please select the number of images you want to fetch</p>
+                                      <input class="form-control" name="imagesCount" id="imagesCount" value="1" min="1" max="50" type="number">
+                                    </div><!-- col -->
+                                  </div><!-- row -->
+                                </div>
+                                <button
+                                  type="button"
+                                  id="searchStep"
+                                  name="search"
+                                  disabled
+                                  class="action-button disabled"
+                                  value="Search"
+                                >
+                                Search
+                              </button>
+                                <button
+                                  type="button"
+                                  name="previous"
+                                  class="previous action-button-previous"
+                                  value="Previous"
+                                >
+                                Previous
+                              </button>
+                              </fieldset>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div><!-- az-content-body -->
+
+                    <hr class="mg-y-30">
+                    <hr class="mg-y-30">
+                    <div class="ht-40"></div>
+
+                  </div><!-- az-content-body -->
+
+              </div><!-- az-content -->
+      </div><!-- az-content-body -->
+
+  </div><!-- az-content -->
+
+  {% endblock %}

@@ -1,0 +1,10 @@
+{% for p,f in images_to_display %}
+   <div class="responsive">
+       <div class="gallery">
+           <a target="_blank" href="{{ url_for('download_file', filename=f, path=p) }}">
+               <img src="{{ url_for('download_file', filename=f, path=p) }}" alt="image" />
+          </a>
+        </div>
+    </div>
+
+{% endfor %}

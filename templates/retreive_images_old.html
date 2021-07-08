@@ -1,0 +1,151 @@
+{% extends 'base.html' %} 
+
+{% block title %} Train Model {% endblock %} 
+
+
+{% block nav_items %}
+
+<style type="text/css">
+  #qimg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      max-width: 100%;
+      max-height: 100%;
+  }
+  </style>
+
+
+<ul class="nav">
+  <li class="nav-item ">
+    <a href="{{ url_for('dashboard_page') }}" class="nav-link"><i class="typcn typcn-home"></i> Welcome</a>
+  </li>
+  <li class="nav-item ">
+    <a href="{{ url_for('train_model_page') }}" class="nav-link"><i class="typcn typcn-chart-area-outline"></i> Train Model</a>
+  </li>
+  <li class="nav-item active">
+    <a href="{{ url_for('search_page') }}" class="nav-link"><i class="typcn typcn-zoom-outline"></i> Search</a>
+  </li>
+</ul>
+
+{% endblock %}
+
+{% block content %}
+
+
+<div class="az-content pd-y-20 pd-lg-y-30 pd-xl-y-40">
+  <div class="container">
+
+    <div class="az-content-body pd-lg-l-40 d-flex flex-column">
+      <h2 class="az-content-title">Image Retreival</h2>
+      <div class="row row-sm mg-b-20">
+        <div class="col-sm-3 col-md-4 col-lg-3">
+          <p class="mg-b-20">* Upload Query Image</p>
+          <form method="post" class="needs-validation" action="/search" enctype="multipart/form-data" >
+            <!-- was-validated -->
+
+
+            <div class="custom-file mg-b-20 mx-auto">
+              <input type="file" name="file" class="custom-file-input" id="file" required>
+              <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+    
+            {% if (p and f) %}
+
+            <div class="col-sm-12 col-md-12 col-lg-12">
+              <div class="responsive" style="width: 200px;  height: 200px; padding: 5px;">
+                <div class="gallery">
+                  <a target="_blank" href="{{p+f}}">
+                    <img id="qimg" class="m-auto"  src ="{{ url_for('download_file', filename=f, path=p) }}" alt="image">
+                  </a>
+                </div>
+              </div> 
+              <div class="clearfix"></div>      
+            </div>
+              
+    
+            {% endif %}
+
+
+
+  
+
+            <p class="mg-y-20 ">* Select how many images to retreive</p>
+            <div class="custom-file mg-b-20 mx-auto">
+                <input class="form-control" placeholder="0" type="number" min="0" name="numberRetreivedImages" id="numberRetreivedImages" required>
+            </div><!-- row -->
+            <!-- <div class="ht-40"></div> -->
+
+            <p class="mg-b-20">* Select trained model</p>
+            <div class="custom-file mg-b-20 mx-auto">
+
+              <select class="form-control select2-no-search" name="model" required>
+                <option label="Choose one" SELECTED></option>
+                {% for f,p in list_of_models %}
+                    <option value="{{ p + f }}">{{ f }}</option>
+                {% endfor %}
+              </select>
+            </div><!-- row -->
+            <div class="ht-40"></div>
+
+            <div class="row row-xs wd-xl-80p w-auto">
+              <div class="col-sm-12 col-md-12 "><button type="submit" class="btn btn-az-primary btn-block">Search</button></div>
+            </div><!-- row -->
+
+          </form>
+        </div>
+        <div class="col-sm-1 col-md-1 col-lg-1" style=" border-left: 1px solid rgb(255, 255, 255); height: 500px;"> </div>
+        
+        <div class="col-sm-8 col-md-7 col-lg-8">
+
+          {% for p,f,c,bc,d in images_to_display %}
+
+            <div class="responsive" st>
+              <div class="gallery" style="border: 6px solid {{bc}};">
+                <a target="_blank" href="{{ url_for('download_file', filename=f, path=p) }}">
+                  <img src ="{{ url_for('download_file', filename=f, path=p) }}" alt="image">
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+          <div class="clearfix"></div>
+        </div><!-- col -->
+      </div>
+
+
+    </div><!-- az-content-body -->
+
+      <hr class="mg-y-30">
+      <hr class="mg-y-30">
+      <div class="ht-40"></div>
+
+    </div><!-- az-content-body -->
+
+</div><!-- az-content -->
+
+
+<!-- <script type="text/javascript">
+
+  $(function()
+  {
+      $('#file').on('submit',function ()
+      {
+          var filePath = $(this).val();
+          alert(filePath);
+          // console.log(filePath);
+      });
+  });
+
+
+  var file = document.getElementById("file");
+
+file.addEventListener("submit", function() {
+    for (var i = 0; i < file.files.length; i++) {
+        console.log(file.files[i].name);
+    }
+}, false); -->
+
+</script>
+
+{% endblock %}

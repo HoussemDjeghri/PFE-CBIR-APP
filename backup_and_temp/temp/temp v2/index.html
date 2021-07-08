@@ -1,0 +1,168 @@
+{% extends 'base.html' %} {% block title %} Home page {% endblock %} {% block
+content %}
+<!-- <nav class="navbar navbar-expand navbar-light bg-white ">
+                        <h1 class="h2 mb-0 text-gray-800"></h1>
+                    </nav> -->
+
+<!-- Begin Page Content -->
+<div class="container-fluid mb-4 static-top">
+  <!-- Content Row -->
+  <div class="row">
+    <div class="card shadow mb-2 mt-2 col-12">
+      <div class="card-header py-3">
+        <a href="#" class="btn btn-success btn-circle d-inline">
+          <span><b>1</b></span>
+        </a>
+        <h6 class="m-0 font-weight-bold text-primary d-inline ml-4">
+          Select A Query Image
+        </h6>
+      </div>
+      <div class="card-body">
+        
+        <Form action="/uploadQueryImage" method="post" enctype="multipart/form-data">
+        <div class="file-upload">
+          <a
+            href="#"
+            class="btn btn-success w-100 p-2"
+            onclick="$('.file-upload-input').trigger( 'click' )"
+          >
+            <span class="icon text-white-50">
+              <i class="fas fa-image"></i>
+            </span>
+            <span class="text">Add Query Image</span>
+          </a>
+
+          <div class="image-upload-wrap">
+            <input
+              class="file-upload-input"
+              type="file"
+              name="imagefile"
+              onchange="readURL(this);"
+              accept="image/*"
+            />
+            <div class="drag-text">
+              <h3>Drag and drop a file or select add Image</h3>
+            </div>
+          </div>
+          <div class="file-upload-content">
+            <img class="file-upload-image" src="#" alt="your image" />
+            <div class="image-title-wrap">
+              <button
+                type="button"
+                onclick="removeUpload()"
+                class="btn btn-danger w-100 p-2"
+              >
+                <i class="far fa-trash-alt"></i> Remove
+                <span class="image-title">Uploaded Image</span>
+              </button>
+              <input type="submit" value="Upload image"/>
+            </div>
+          </div>
+        </div>
+      </Form>
+      </div>
+    </div>
+
+    <div class="card shadow mb-2 mt-2 col-12">
+      <div class="card-header py-3">
+        <a href="#" class="btn btn-success btn-circle d-inline">
+          <span><b>2</b></span>
+        </a>
+        <h6 class="m-0 font-weight-bold text-primary d-inline ml-4">
+          Extract Query Image Features
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="file-upload">
+          <a href="#" class="btn btn-success w-100 p-2">
+            <span class="text">Extract Features</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow mb-2 mt-2 col-12">
+      <div class="card-header py-3">
+        <a href="#" class="btn btn-success btn-circle d-inline">
+          <span><b>3</b></span>
+        </a>
+        <h6 class="m-0 font-weight-bold text-primary d-inline ml-4">
+          Retreive Similar Images
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="file-upload">
+          <a href="#" class="btn btn-success w-100 p-2">
+            <span class="text">performe Search</span>
+          </a>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="thumbnail">
+              <a
+                href=" {{ url_for('static', filename='images_temp_for_dev/XY.png') }} "
+                target="_blank"
+              >
+                <img
+                  src=" {{ url_for('static', filename='images_temp_for_dev/XY.png') }} "
+                  alt="Lights"
+                  style="width: 50%"
+                />
+                <div class="caption">
+                  <ul style="list-style: none">
+                    <li><code>Distance</code></li>
+                    <li><code>Precision</code></li>
+                    <li><code>Recall</code></li>
+                  </ul>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="thumbnail">
+              <a
+                href=" {{ url_for('static', filename='images_temp_for_dev/XY.png') }} "
+                target="_blank"
+              >
+                <img
+                  src=" {{ url_for('static', filename='images_temp_for_dev/XY.png') }} "
+                  alt="Nature"
+                  style="width: 50%"
+                />
+                <div class="caption">
+                  <ul style="list-style: none">
+                    <li><code>Distance</code></li>
+                    <li><code>Precision</code></li>
+                    <li><code>Recall</code></li>
+                  </ul>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="thumbnail">
+              <a
+                href=" {{ url_for('static', filename='images_temp_for_dev/XY.png') }} "
+                target="_blank"
+              >
+                <img
+                  src=" {{ url_for('static', filename='images_temp_for_dev/XY.png') }} "
+                  alt="Fjords"
+                  style="width: 50%"
+                />
+                <div class="caption">
+                  <ul style="list-style: none">
+                    <li><code>Distance</code></li>
+                    <li><code>Precision</code></li>
+                    <li><code>Recall</code></li>
+                  </ul>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

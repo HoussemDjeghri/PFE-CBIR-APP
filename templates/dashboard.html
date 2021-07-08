@@ -1,0 +1,42 @@
+{% extends 'base.html' %} 
+
+{% block title %} Dashboard {% endblock %} 
+
+{% block nav_items %}
+
+
+
+<ul class="nav">
+  <li class="nav-item active">
+    <a href="{{ url_for('dashboard_page') }}" class="nav-link"><i class="typcn typcn-home"></i> Welcome</a>
+  </li>
+  <li class="nav-item">
+    <a href="{{ url_for('train_model_page') }}" class="nav-link"><i class="typcn typcn-chart-area-outline"></i> Train Model</a>
+  </li>
+  <li class="nav-item">
+    <a href="{{ url_for('search_page') }}" class="nav-link"><i class="typcn typcn-zoom-outline"></i> Search</a>
+  </li>
+</ul>
+
+{% endblock %}
+
+{% block content %}
+
+
+
+  <div class="az-content az-content-dashboard">
+    <div class="container">
+      <div class="az-content-body">
+        <div class="az-dashboard-one-title">
+          <div>
+            <h2 class="az-dashboard-title">Hi, welcome back!</h2>
+            <p class="az-dashboard-text">Your web analytics dashboard template.</p>
+          </div>
+
+        </div><!-- az-dashboard-one-title -->
+
+      </div><!-- az-content-body -->
+    </div>
+  </div><!-- az-content -->
+
+{% endblock %}

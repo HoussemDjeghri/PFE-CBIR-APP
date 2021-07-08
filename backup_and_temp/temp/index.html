@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %} Home page {% endblock %}
+
+{% block content %} 
+
+<div>
+    <H1>Upload query image {{content[1]}}</H1>
+    <Form action="/uploadQueryImages" method="post" enctype="multipart/form-data">
+        <label for="formFileSm">Select an image</label>
+        <br/>
+        <input id="formFileSm" type="file" name="imagefile"/>
+        <br/>
+        <input type="submit" value="Upload image"/>
+    </Form>
+</div>
+
+<div>
+    <h1>Try render list using python code inside html</h1>
+    <!-- expression statement  -->
+    {% for x in content: %} 
+            <p>{{x}}</p>
+    {% endfor %}
+</div>
+
+<hr>
+<div>
+    <H1>Upload dataset</H1>
+    <Form action="/uploadDataset" method="post" enctype="multipart/form-data">
+        <label for="formFile">Select an image</label>
+        <br/>
+        <input id="formFile" type="file" name="datasetpath" webkitdirectory multiple />  
+        <!-- accept="image/*" -->
+        <br/>
+        <input type="submit" value="Upload dataset"/>
+    </Form>
+</div>
+
+
+<input type="file" id="filepicker" name="fileList" webkitdirectory multiple />
+<ul id="listing"></ul>
+
+
+<br>
+<br>
+<br>
+
+<script>
+
+    document.getElementById("filepicker").addEventListener("change", function(event) {
+        let output = document.getElementById("listing");
+        let files = event.target.files;
+      
+        for (let i=0; i<files.length; i++) {
+          let item = document.createElement("li");
+          item.innerHTML = files[i].webkitRelativePath;
+          output.appendChild(item);
+        };
+      }, false);
+
+</script>
+
+{% endblock %}

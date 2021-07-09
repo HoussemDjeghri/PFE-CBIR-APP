@@ -42,8 +42,11 @@ class UploadFiles:
         else:
             return "Please upload zip file"
 
-    def upload(self):
-        obj = self.request_files.get("file")
+    def upload(self,nameOfFile):
+        fiiiileName=nameOfFile
+        if not nameOfFile:
+            fiiiileName = 'file'
+        obj = self.request_files.get(fiiiileName)
         # print(obj)  # <FileStorage: "test.zip" ("application/x-zip-compressed")>
         # print(obj.filename)  # test.zip
         # print(obj.stream)  # <tempfile.SpooledTemporaryFile object at 0x0000000004135160>

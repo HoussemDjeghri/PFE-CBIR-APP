@@ -33,13 +33,14 @@
 
 {% block content %}
 
+<!-- 
   <div class="az-content" style="padding-top: 0px;">
-    <div class="container">
-              <div class="az-content pd-y-20 pd-lg-y-30 pd-xl-y-40" style="width: 100%;">
+    <div class="container"> -->
+              <div class="az-content pd-y-20 pd-lg-y-30 pd-xl-y-0" style="width: 100%;">
                 <div class="container" style="width: 100%;">
 
                   <div class="az-content-body d-flex flex-column" style="width: 100%;">
-                    <h4 class="">Image Retreival</h4>
+                    <!-- <h4 class="">Image Retreival</h4> -->
                     <div class="container-fluid">
                       <div class="row justify-content-center" style="width: 100%;">
                         <div
@@ -50,7 +51,7 @@
                             mb-2
                           "
                         >
-                          <div class="card px-0 pb-0 mt-3 mb-3">
+                          <div class="px-0 pb-0 mt-3 mb-3">
 
                             <form id="msform">
                               <!-- progressbar -->
@@ -65,7 +66,7 @@
                                 <div class="form-card">
                                   <div class="row mg-b-20">
                                     <div class="col-9">
-                                      <p style="font-size: 14px;">Before search testing your model you will need to load your test data set and your modal </p>
+                                      <!-- <p style="font-size: 14px;">Before search testing your model you will need to load your test data set and your modal </p> -->
                                     </div>
                                     <div class="col-3">
                                       <h6 class="steps">Step 1 - 2</h6>
@@ -95,8 +96,9 @@
                                     <div class="row row-sm mg-b-20">
                                       <div class="col-sm-12">
                                         <div class="custom-file">
-                                          <input type="file" name="dataSetFile" class="custom-file-input" id="dataSetFile" accept=".zip">
-                                          <label class="custom-file-label" for="customFile">Choose file</label>
+                                          <input type="file" name="dataSetFile" class="custom-file-input" id="dataSetFile" accept=".zip" oninput="input_filename()"
+                                          required /><!--form-control-->
+                                          <label class="custom-file-label" id="dataSetFile_label" for="customFile">Choose file</label>
                                         </div>
                                       </div><!-- col -->
                                     </div><!-- row -->
@@ -110,25 +112,44 @@
                                         </div>
                                       </div><!-- col -->
                                     </div><!-- row -->
-                                    <div class="row row-sm mg-b-20">
+                                    <!-- <div class="row row-sm mg-b-20">
                                       <div class="col-sm-12">
                                         <p class="mg-b-10">Please select the column that contains the classes names</p>
                                         <select name="classColumn" id="classColumn" class="form-control select2-no-search">
 
                                         </select>
+                                      </div>
+                                    </div> -->
+
+                                    <div class="row row-sm mg-b-20">
+                                      <div class="col-sm-6">
+                                        <p class="mg-b-10">Please select the column that contains the classes names</p>
+                                        <select name="classColumn" id="classColumn" class="form-control select2-no-search">
+
+                                        </select>
                                       </div><!-- col -->
+
+                                      <div class="col-sm-6">
+                                        <p class="mg-b-10">Please select the column that contains the images names</p>
+                                        <select name="imageIdColumn" id="imageIdColumn" class="form-control select2-no-search">
+
+                                        </select>
+                                      </div><!-- col -->
+
                                     </div><!-- row -->
+
+
                                   </div>
                                   <div class="row row-sm mg-b-20 mg-t-30">
                                     <div class="col-sm-12">
-                                      <h6 class="mg-b-30 mg-t-20">2- Please select the modal that you want to use</h6>
-                                      <select name="modal" id="modal" class="form-control select2-no-search">
-                                        <option value="Firefox" selected>Firefox</option>
-                                        <option value="Chrome">Chrome</option>
-                                        <option value="Safari">Safari</option>
-                                        <option value="Opera">Opera</option>
-                                        <option value="Internet Explorer">Internet Explorer</option>
+                                      <h6 class="mg-b-30 mg-t-20">2- Please select the model that you want to use</h6>
+
+                                      <select class="form-control select2-no-search" name="modal" id="modal"  required>
+                                        {% for f,p in list_of_models %}
+                                            <option value="{{ p + f }}">{{ f }}</option>
+                                        {% endfor %}
                                       </select>
+
                                     </div><!-- col -->
                                   </div><!-- row -->
                                 </div>
@@ -172,7 +193,7 @@
                                   id="searchStep"
                                   name="search"
                                   disabled
-                                  class="action-button disabled"
+                                  class="search action-button disabled"
                                   value="Search"
                                 >
                                 Search
@@ -191,17 +212,36 @@
                         </div>
                       </div>
                     </div>
-                  </div><!-- az-content-body -->
-
-                    <hr class="mg-y-30">
-                    <hr class="mg-y-30">
-                    <div class="ht-40"></div>
-
-                  </div><!-- az-content-body -->
+                    <div class="container-fluid">
+                      <div class="row justify-content-center" style="width: 100%;">
+                        <div
+                          class="
+                            col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9
+                            text-center
+                            p-0
+                            mb-2
+                          "
+                          id="uploaded_images_wrapper"
+                        >   
+                 
+                      </div>
+                    </div>
+                  
+                    </div>
+    
 
               </div><!-- az-content -->
-      </div><!-- az-content-body -->
+      <!-- </div>
 
-  </div><!-- az-content -->
+  </div> -->
+
+  <script>
+      var input = document.getElementById("dataSetFile");
+      var file_input_label = document.getElementById("dataSetFile_label");
+      // Function to update the input placeholder
+      function input_filename() {
+        file_input_label.innerText = input.files[0].name;
+      }
+  </script>
 
   {% endblock %}

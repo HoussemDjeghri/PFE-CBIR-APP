@@ -1,0 +1,10 @@
+{% for p,f,c,bc,d in images_to_display %}
+
+<div class="responsive" st style="display: flex; justify-content: center;">
+  <div class="gallery" style="width:100%; border: 6px solid {{bc}};">
+    <a target="_blank" href="{{ url_for('download_file', filename=f, path=p) }}">
+      <img src ="{{ url_for('download_file', filename=f, path=p) }}" alt="image">
+    </a>
+  </div>
+</div>
+{% endfor %}

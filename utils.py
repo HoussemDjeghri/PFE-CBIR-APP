@@ -84,6 +84,7 @@ class Utils:
         results = []
 
         for i in range(0, len(index["features"])):
+            print('indeeeeeeeeeeeeeeeeex : ', i)
             # compute the euclidean distance between our query features
             # and the features for the current image in our index, then
             # update our results list with a 2-tuple consisting of the
